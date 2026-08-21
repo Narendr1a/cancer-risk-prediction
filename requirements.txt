@@ -4,3 +4,4 @@ pandas
 Scikit-learn
 matplotlib
 seaborn
+dill
