@@ -44,12 +44,3 @@ class DataIngestion:
             raise CustomException(e, sys)
 
 
-if __name__ == "__main__":
-    obj = DataIngestion()
-    train_data, test_data = obj.initiate_data_ingestion()
-
-    datatransformation = DataTransformation()
-    train_arr, test_arr, _ = datatransformation.initiate_data_transformation(train_data, test_data)
-
-    modeltrainer = ModelTrainer()
-    modeltrainer.initiate_model_trainer(train_arr, test_arr)

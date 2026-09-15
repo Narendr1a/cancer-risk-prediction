@@ -45,7 +45,49 @@ class ModelTrainer:
                 "Adaboost classifier": AdaBoostClassifier()
             }
 
-            model_report:dict =  evaluate_model(X_train, y_train, X_test, y_test, models)
+            params = {
+                    "Logistic regression": {
+                        "C": [0.01, 0.1, 1, 10, 100],
+                        "solver": ["lbfgs", "liblinear"],
+                        "max_iter": [500, 1000, 2000]
+                    },
+
+                    "KNeighbour classifier": {
+                        "n_neighbors": [3, 5, 7, 9, 11, 15, 21],
+                        "weights": ["uniform", "distance"],
+                        "metric": ["euclidean", "manhattan", "minkowski"],
+                        "p": [1, 2]
+                    },
+
+                    "SVC": {
+                            "C": [0.1, 1, 10, 100],
+                            "kernel": ["linear", "rbf", "poly"],
+                            "gamma": ["scale", "auto", 0.01, 0.1, 1]
+                        },
+
+                    "Random forest classifier": {
+                        "n_estimators": [100, 200, 300],
+                        "max_depth": [None, 5, 10, 15, 20],
+                        "min_samples_split": [2, 5, 10],
+                        "min_samples_leaf": [1, 2, 4],
+                        "max_features": ["sqrt", "log2"]
+                    },
+
+                    "XGB classifier": {
+                        "n_estimators": [100, 200, 300],
+                        "learning_rate": [0.01, 0.05, 0.1, 0.2],
+                        "max_depth": [3, 4, 5, 6],
+                        "min_child_weight": [1, 2, 5],
+                        "subsample": [0.7, 0.8, 1.0],
+                        "colsample_bytree": [0.7, 0.8, 1.0]
+                    },
+                    "Adaboost classifier": {
+                            "n_estimators": [50, 100, 200, 300],
+                            "learning_rate": [0.01, 0.05, 0.1, 0.5, 1.0]
+                    },
+            }
+
+            model_report:dict =  evaluate_model(X_train, y_train, X_test, y_test, models, params)
 
             best_model_score = max(model_report.values())
 
