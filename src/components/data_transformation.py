@@ -8,6 +8,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OrdinalEncoder, StandardScaler, OneHotEncoder
+from imblearn.over_sampling import SMOTE
 
 from src.utils import save_object
 from src.logger import logging
@@ -39,7 +40,6 @@ class DataTransformation:
                             "Physical_Activity_Level"
                         ]
             categorical_columns = [
-                            "Cancer_Type",
                             "Gender",
                             "Family_History",
                             "BRCA_Mutation",
@@ -68,11 +68,12 @@ class DataTransformation:
             preprocessor = ColumnTransformer(
                             [
                                 ("num_pipeline", num_pipeline, numerical_columns),
-                                ("cat_pipeline", cat_pipeline, categorical_columns)
+                                ("cat_pipeline", cat_pipeline, categorical_columns),
                             ]
                         )
             
             return preprocessor
+        
         except Exception as e:
             raise CustomException(e, sys)
 
@@ -95,12 +96,32 @@ class DataTransformation:
             input_feature_test_df = test_df.drop(columns=[target_column_name] + features)
             target_feature_test_df = test_df[target_column_name]
 
+            # Encode target
+            target_mapping = {
+                "Low": 0,
+                "Medium": 1,
+                "High": 2
+            }
+
+            target_feature_train_df = target_feature_train_df.map(target_mapping)
+            target_feature_test_df = target_feature_test_df.map(target_mapping)
+
             logging.info(
                 "Applying preprocessing object on training and testing dataframe."
             )
 
             input_feature_train_arr = preprocessing_obj.fit_transform(input_feature_train_df)
             input_feature_test_arr = preprocessing_obj.transform(input_feature_test_df)
+
+            smote = SMOTE()
+
+            resampled = smote.fit_resample(
+                    input_feature_train_arr,
+                    target_feature_train_df
+                )
+
+            input_feature_train_arr = resampled[0]
+            target_feature_train_df = resampled[1]
 
             train_arr = np.c_[
                 input_feature_train_arr, np.array(target_feature_train_df)
