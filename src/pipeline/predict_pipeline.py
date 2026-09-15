@@ -25,7 +25,7 @@ class PredictPipeline:
 
             print("After loading model and preprocessor")
 
-            data_scaled = preprocessor.transform("features")
+            data_scaled = preprocessor.transform(features)
 
             prediction = model.predict(data_scaled)
 
