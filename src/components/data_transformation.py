@@ -87,12 +87,12 @@ class DataTransformation:
             preprocessing_obj = self.get_data_transformer_object()
 
             target_column_name = "Risk_Level"
-            highly_correlated_features = "Overall_Risk_Score"
+            features = ["Patient_ID", "Cancer_Type", "Overall_Risk_Score"]
 
-            input_feature_train_df = train_df.drop(columns=[target_column_name, highly_correlated_features])
+            input_feature_train_df = train_df.drop(columns=[target_column_name] + features)
             target_feature_train_df = train_df[target_column_name]
 
-            input_feature_test_df = test_df.drop(columns=[target_column_name, highly_correlated_features])
+            input_feature_test_df = test_df.drop(columns=[target_column_name] + features)
             target_feature_test_df = test_df[target_column_name]
 
             logging.info(
