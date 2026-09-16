@@ -5,7 +5,7 @@
 A comprehensive **end-to-end machine learning project** for predicting cancer risk using data science techniques. This educational project demonstrates the complete workflow of a real-world machine learning application, from data collection to model deployment.
 
 **Course/Context:** Student Learning Project  
-**Status:** 🚀 In Development  
+**Status:** ✅ Complete — Data Collection, Cleaning, EDA, Model Development & Evaluation  
 **Last Updated:** September 2026
 
 ---
@@ -26,46 +26,44 @@ This project aims to:
 
 The project follows a structured machine learning pipeline:
 
-1. **Data Collection & Inspection**
-   - Load and explore the dataset
-   - Understand data structure and quality
-   - Document data sources
+1. **Data Collection & Inspection** ✅
+   - Loaded and explored the dataset (2,000 patients, 21 columns)
+   - Confirmed no missing values, no duplicate rows
+   - Documented data source and structure
 
-2. **Data Cleaning & Preprocessing**
-   - Handle missing values
-   - Remove duplicates and outliers
-   - Normalize/scale features
-   - Encode categorical variables
+2. **Data Cleaning & Preprocessing** ✅
+   - Dropped non-predictive identifier (`Patient_ID`)
+   - Label-encoded `Risk_Level` (Low/Medium/High → 0/1/2)
+   - One-hot encoded `Cancer_Type`
+   - Exported processed dataset (`cancer-risk-factors-processed.csv`)
 
-3. **Exploratory Data Analysis (EDA)**
-   - Statistical analysis
-   - Visualizations and distributions
-   - Feature correlations
-   - Identify patterns and relationships
+3. **Exploratory Data Analysis (EDA)** ✅
+   - Statistical summaries and distributions
+   - Univariate analysis of all 16 predictors against `Risk_Level`
+   - Feature correlation analysis
+   - Identified patterns and a data leakage risk (see Key Insights)
 
-4. **Feature Engineering**
-   - Feature selection and extraction
-   - Create meaningful features
-   - Handle imbalanced data if needed
+4. **Feature Engineering** 🚧
+   - Feature selection based on EDA findings (in progress)
+   - Handling class imbalance in `Risk_Level` (planned: class weighting / SMOTE)
 
-5. **Model Development**
-   - Train multiple algorithms (e.g., Logistic Regression, Random Forest, SVM, XGBoost)
+5. **Model Development** ✅
+   - Trained and compared algorithms
    - Hyperparameter tuning
    - Cross-validation
 
-6. **Model Evaluation**
-   - Performance metrics (Accuracy, Precision, Recall, F1-Score, AUC-ROC)
+6. **Model Evaluation** ✅
+   - Accuracy 86%, Precision 0.86, Recall 0.86, F1-Score 0.86
    - Confusion matrix analysis
    - Model comparison
 
-7. **Model Persistence**
+7. **Model Persistence** 🚧
    - Save the best-performing model
    - Document model specifications
 
-8. **Documentation & Deployment**
-   - Create usage guides
-   - Document API/interface
-   - Prepare for deployment
+8. **Documentation & Deployment** 🚧
+   - EDA and evaluation results documented (this README)
+   - Usage guides and deployment: pending
 
 ---
 
@@ -174,23 +172,36 @@ predictions = model.predict(new_data)
 
 ## 📈 Expected Results
 
-- **Model Performance Metrics** (to be updated after training):
-  - Accuracy: [TBD]
-  - Precision: [TBD]
-  - Recall: [TBD]
-  - F1-Score: [TBD]
-  - AUC-ROC: [TBD]
+- **Model Performance Metrics**:
+  - Accuracy: 86%
+  - Precision: 0.86
+  - Recall: 0.86
+  - F1-Score: 0.86
 
-- **Key Insights**: [To be documented after EDA]
+  Given the target class imbalance (78.7% Medium baseline — see Key Insights below), confirm whether these are **macro-averaged** (treats Low/Medium/High equally) or **weighted-averaged** (dominated by the Medium class) before reporting them as-is. All four metrics landing on the identical value is a bit unusual and worth double-checking against a per-class confusion matrix, especially for the minority "High" class (102 rows) — that's the one this model actually needs to get right.
+
+- **Key Insights** (from EDA):
+
+  **Target distribution (`Risk_Level`)**: Medium 78.7%, Low 16.2%, High 5.1% — severely imbalanced. Requires stratified splits and class weighting / SMOTE for the minority "High" class (only 102 of 2,000 rows).
+
+  **Strongest risk-increasing factors** (High vs. Low mean difference): Air_Pollution (+5.59), Smoking (+4.67), Alcohol_Use (+4.54), Diet_Salted_Processed (+4.15), Occupational_Hazards (+3.63), Diet_Red_Meat (+3.39), Obesity (+2.45). All show a consistent monotonic trend in their univariate distributions — risk shifts toward "High" as these values increase.
+
+  **Protective factor**: Fruit_Veg_Intake (-1.75) — higher intake skews toward Low risk.
+
+  **Negligible / no signal**: Age, Gender, Family_History, BRCA_Mutation, H_Pylori_Infection, Calcium_Intake, BMI, Physical_Activity_Level — flat across risk levels, not useful predictors in this dataset.
+
+  **⚠️ Data leakage risk**: `Overall_Risk_Score` correlates 0.77 with `Risk_Level`, far above any other feature. This strongly suggests `Risk_Level` was derived (binned) from `Overall_Risk_Score`. **This column should be excluded from model features** unless proven otherwise.
+
+  **Cancer_Type × Gender**: Breast is 455 female vs. 5 male; Prostate is 305 male vs. 0 female — expected biological pattern, but means `Gender` and `Cancer_Type` are collinear and redundant if both used to predict one another.
 
 ---
 
 ## 🔍 Dataset Information
 
-- **Source**: [Dataset source to be documented]
-- **Size**: [To be filled]
-- **Features**: [To be filled]
-- **Target Variable**: Cancer Risk (Binary: Yes/No)
+- **Source**: `data/cancer-risk-factors.csv` (synthetic/educational cancer risk factors dataset)
+- **Size**: 2,000 rows × 21 columns
+- **Features**: `Cancer_Type`, `Age`, `Gender`, `Smoking`, `Alcohol_Use`, `Obesity`, `Family_History`, `Diet_Red_Meat`, `Diet_Salted_Processed`, `Fruit_Veg_Intake`, `Physical_Activity`, `Air_Pollution`, `Occupational_Hazards`, `BRCA_Mutation`, `H_Pylori_Infection`, `Calcium_Intake`, `Overall_Risk_Score`, `BMI`, `Physical_Activity_Level` (plus identifier `Patient_ID`)
+- **Target Variable**: `Risk_Level` — 3-class categorical (Low / Medium / High), not binary
 - **Documentation**: See `data/README.md` for detailed dataset information
 
 ---
@@ -253,7 +264,3 @@ For questions or issues:
 - [Pandas User Guide](https://pandas.pydata.org/docs/)
 - [Jupyter Notebook Guide](https://jupyter.org/)
 - [Machine Learning Best Practices](https://developers.google.com/machine-learning/crash-course)
-
----
-
-
