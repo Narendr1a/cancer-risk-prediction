@@ -1,0 +1,10 @@
+[2026-08-21 18:22:56,464] 23 root - INFO - Entered the data ingestion method or component.
+[2026-08-21 18:22:56,473] 26 root - INFO - Read the dataframe as pandas dataframe
+[2026-08-21 18:22:56,488] 31 root - INFO - Train test split initiated
+[2026-08-21 18:22:56,506] 36 root - INFO - Data ingestion completed successfully.
+[2026-08-21 18:22:56,546] 84 root - INFO - Reading train and test data completed.
+[2026-08-21 18:22:56,546] 85 root - INFO - Obtaining preprocessing object.
+[2026-08-21 18:22:56,546] 65 root - INFO - Categorical columns: ['Cancer_Type', 'Gender', 'Family_History', 'BRCA_Mutation', 'H_Pylori_Infection']
+[2026-08-21 18:22:56,548] 66 root - INFO - Numerical columns: ['Age', 'Smoking', 'Alcohol_Use', 'Obesity', 'Diet_Red_Meat', 'Diet_Salted_Processed', 'Physical_Activity', 'Air_Pollution', 'Occupational_Hazards', 'Calcium_Intake', 'BMI', 'Physical_Activity_Level']
+[2026-08-21 18:22:56,550] 98 root - INFO - Applying preprocessing object on training and testing dataframe.
+[2026-08-21 18:22:56,777] 112 root - INFO - Saved preprocessing object.

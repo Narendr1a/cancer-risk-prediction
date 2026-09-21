@@ -2,6 +2,7 @@ import os
 import sys
 import pandas as pd
 
+from src.logger import logging
 from src.exceptions import CustomException
 from src.utils import load_object
 
@@ -13,7 +14,7 @@ class PredictPipeline:
     def predict(self, features):
         try:
 
-            print("Before loading model and preprocessor")
+            logging.info("Before loading model and preprocessor")
 
             model = load_object(
                 file_path=self.model_path
@@ -23,7 +24,10 @@ class PredictPipeline:
                 file_path=self.preprocessor_path
             )
 
-            print("After loading model and preprocessor")
+            if not os.path.exists(self.model_path):
+                raise FileNotFoundError(f"Model not found at {self.model_path}. Please train the model first.")
+
+            logging.info("After loading model and preprocessor")
 
             data_scaled = preprocessor.transform(features)
 

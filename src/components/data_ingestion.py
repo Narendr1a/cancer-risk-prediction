@@ -23,7 +23,8 @@ class DataIngestion:
     def initiate_data_ingestion(self):
         logging.info("Entered the data ingestion method or component.")
         try:
-            df = pd.read_csv(r'C:\Projects\cancer-risk-prediction\notebooks\data\cancer-risk-factors.csv')
+            df = pd.read_csv(os.path.join('notebooks', 'data', 'cancer-risk-factors.csv'))
+
             logging.info('Read the dataframe as pandas dataframe')
 
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok = True)

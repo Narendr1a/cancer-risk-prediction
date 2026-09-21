@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: Narendra
+Version: 0.0.1
+Author: Narendra
+Author-email: bchoudhary47554@gmail.com
+Requires-Dist: setuptools
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: Scikit-learn
+Requires-Dist: matplotlib
+Requires-Dist: seaborn
+Dynamic: author
+Dynamic: author-email
+Dynamic: requires-dist

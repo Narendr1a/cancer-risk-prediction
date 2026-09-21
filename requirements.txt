@@ -1,11 +1,11 @@
 setuptools
 numpy
 pandas
-Scikit-learn
+scikit-learn
 matplotlib
 seaborn
 dill
-imblearn
+imbalanced-learn
 optuna
 xgboost
 catboost
